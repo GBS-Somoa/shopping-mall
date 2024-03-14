@@ -32,6 +32,9 @@ dependencies {
 
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // h2 db for test
+    testRuntimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
