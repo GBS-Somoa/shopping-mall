@@ -1,14 +1,11 @@
 package com.s001.shoppingmall.product.entity;
 
 import com.s001.shoppingmall.common.entity.BaseEntity;
-import com.s001.shoppingmall.order.entity.OrderProduct;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -36,22 +33,19 @@ public class Product extends BaseEntity {
     private double rating;
 
     @Column(name = "product_comment_count", nullable = false)
-    private int commentCount;
+    private int reviewCount;
 
     @Column(name = "product_barcode", unique = true)
     private String barcode;
 
-    @OneToMany(mappedBy = "product")
-    private List<OrderProduct> orderProducts;
-
     @Builder
-    public Product(String name, int price, String thumbnailImageUrl, String imageUrl, double rating, int commentCount, String barcode) {
+    public Product(String name, int price, String thumbnailImageUrl, String imageUrl, double rating, int reviewCount, String barcode) {
         this.name = name;
         this.price = price;
         this.thumbnailImageUrl = thumbnailImageUrl;
         this.imageUrl = imageUrl;
         this.rating = rating;
-        this.commentCount = commentCount;
+        this.reviewCount = reviewCount;
         this.barcode = barcode;
     }
 }

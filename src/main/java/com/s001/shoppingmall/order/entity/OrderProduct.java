@@ -32,8 +32,13 @@ public class OrderProduct extends BaseEntity {
 
     @Builder
     public OrderProduct(Order order, Product product, int count) {
-        this.order = order;
+        setOrder(order);
         this.product = product;
         this.count = count;
+    }
+
+    private void setOrder(Order order) {
+        this.order = order;
+        order.getOrderProducts().add(this);
     }
 }

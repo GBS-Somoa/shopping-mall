@@ -2,10 +2,7 @@ package com.s001.shoppingmall.order.entity;
 
 import com.s001.shoppingmall.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,12 +26,14 @@ public class Order extends BaseEntity {
     private int paymentAmount;
 
     @Column(name = "order_payment_status", nullable = false)
+    @Setter
     private PaymentStatus paymentStatus;
 
     @Column(name = "order_delivery_fee", nullable = false)
     private int deliveryFee;
 
     @Column(name = "order_delivery_status", nullable = false)
+    @Setter
     private DeliveryStatus deliveryStatus;
 
     @Column(name = "order_recipient_name", nullable = false)
@@ -50,14 +49,14 @@ public class Order extends BaseEntity {
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     @Builder
-    public Order(int paymentAmount, PaymentStatus paymentStatus, int deliveryFee, DeliveryStatus deliveryStatus, String recipientName, String recipientContact, String deliveryAddress) {
+    public Order(int paymentAmount, int deliveryFee, String recipientName, String recipientContact, String deliveryAddress) {
         this.orderDate = LocalDateTime.now();
         this.paymentAmount = paymentAmount;
-        this.paymentStatus = paymentStatus;
         this.deliveryFee = deliveryFee;
-        this.deliveryStatus = deliveryStatus;
         this.recipientName = recipientName;
         this.recipientContact = recipientContact;
         this.deliveryAddress = deliveryAddress;
+        this.paymentStatus = PaymentStatus.COMPLETED;
+        this.deliveryStatus = DeliveryStatus.ORDER_COMPLETED;
     }
 }
