@@ -70,16 +70,16 @@ class OrderTest {
         entityManager.clear();
 
         Order foundOrder = entityManager.find(Order.class, orderId);
-        assertThat(foundOrder).isNotEqualTo(null);
+        assertThat(foundOrder).isNotNull();
 
         // orderProduct 로딩 전
         assertThat(foundOrder.getRecipientName()).isEqualTo(order.getRecipientName());
-        assertThat(Hibernate.isInitialized(foundOrder.getOrderProducts())).isEqualTo(false);
+        assertThat(Hibernate.isInitialized(foundOrder.getOrderProducts())).isFalse();
 
         // orderProduct 로딩 후
         List<OrderProduct> orderProducts = foundOrder.getOrderProducts();
         for (OrderProduct op : orderProducts) {
-            assertThat(Hibernate.isInitialized(op.getProduct())).isEqualTo(false);
+            assertThat(Hibernate.isInitialized(op.getProduct())).isFalse();
         }
     }
 }

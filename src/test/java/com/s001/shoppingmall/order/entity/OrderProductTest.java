@@ -42,8 +42,8 @@ class OrderProductTest {
         OrderProduct found = entityManager.find(OrderProduct.class, orderProduct.getId());
 
         // product 와 order 로딩 전
-        assertThat(Hibernate.isInitialized(found.getProduct())).isEqualTo(false);
-        assertThat(Hibernate.isInitialized(found.getOrder())).isEqualTo(false);
+        assertThat(Hibernate.isInitialized(found.getProduct())).isFalse();
+        assertThat(Hibernate.isInitialized(found.getOrder())).isFalse();
 
         // product 와 order 로딩 후
         Product foundProduct = found.getProduct();
