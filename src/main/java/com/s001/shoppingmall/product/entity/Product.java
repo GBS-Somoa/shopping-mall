@@ -33,7 +33,7 @@ public class Product extends BaseEntity {
     private String imageUrl;
 
     @Column(name = "product_rating", nullable = false)
-    private int rating;
+    private double rating;
 
     @Column(name = "product_comment_count", nullable = false)
     private int commentCount;
@@ -45,7 +45,7 @@ public class Product extends BaseEntity {
     private List<OrderProduct> orderProducts;
 
     @Builder
-    public Product(String name, int price, String thumbnailImageUrl, String imageUrl, int rating, int commentCount, String barcode) {
+    public Product(String name, int price, String thumbnailImageUrl, String imageUrl, double rating, int commentCount, String barcode) {
         this.name = name;
         this.price = price;
         this.thumbnailImageUrl = thumbnailImageUrl;
