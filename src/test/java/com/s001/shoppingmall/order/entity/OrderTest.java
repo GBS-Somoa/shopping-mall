@@ -38,7 +38,6 @@ class OrderTest {
 
     @Test
     void orderLazyLoadingTest() {
-
         Product product = Product.builder()
                 .name("다우니")
                 .price(30_000)

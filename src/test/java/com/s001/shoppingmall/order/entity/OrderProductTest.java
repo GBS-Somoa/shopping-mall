@@ -26,7 +26,6 @@ class OrderProductTest {
 
     @Test
     void OrderProductLazyLoadingTest() {
-
         OrderProduct orderProduct = OrderProduct.builder()
                 .product(product)
                 .order(order)
@@ -55,7 +54,6 @@ class OrderProductTest {
 
     @Test
     void orderProductBuilderTest() {
-
         OrderProduct orderProduct = OrderProduct.builder()
                 .product(product)
                 .order(order)
