@@ -37,16 +37,15 @@ class ProductRepositoryTest {
                     .build());
         }
 
-        ProductSearchCondition condition = new ProductSearchCondition();
-        condition.setKeyword("세탁세제");
+        final String keyword = "세탁세제";
         Pageable pageable;
 
         // when
         pageable = PageRequest.of(0, 2);
-        Page<Product> result1 = productRepository.findAllByNameContaining(pageable, condition.getKeyword());
+        Page<Product> result1 = productRepository.findAllByNameContaining(pageable, keyword);
 
         pageable = PageRequest.of(1, 2);
-        Page<Product> result2 = productRepository.findAllByNameContaining(pageable, condition.getKeyword());
+        Page<Product> result2 = productRepository.findAllByNameContaining(pageable, keyword);
 
         // then
         assertThat(result1.getNumber()).isEqualTo(0);
