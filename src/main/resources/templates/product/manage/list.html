@@ -19,7 +19,11 @@
     </tr>
     <tr th:each="product: ${products}">
         <td th:text="${product.id}"></td>
-        <td th:text="${product.name}"></td>
+        <td>
+            <a th:href="'/products/manage/' + ${product.id}"
+               th:text="${product.name}">
+            </a>
+        </td>
         <td th:text="${product.price}"></td>
         <td th:text="${product.rating}"></td>
         <td th:text="${product.reviewCount}"></td>
@@ -29,6 +33,8 @@
         </td>
     </tr>
 </table>
+<a href="/products/manage/regist">상품 등록</a>
+
 <script>
     const deleteHandle = (productId) => {
         console.log(`remove ${productId}.`);

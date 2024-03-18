@@ -18,7 +18,11 @@
     </tr>
     <tr th:each="product: ${products}">
         <td th:text="${product.id}"></td>
-        <td th:text="${product.name}"></td>
+        <td>
+            <a th:href="'/products/' + ${product.id}"
+               th:text="${product.name}">
+            </a>
+        </td>
         <td th:text="${product.price}"></td>
         <td th:text="${product.rating}"></td>
         <td th:text="${product.reviewCount}"></td>
