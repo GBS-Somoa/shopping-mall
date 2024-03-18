@@ -16,6 +16,7 @@ public class ProductDetailResponse {
     private String imageUrl;
     private double rating;
     private int reviewCount;
+    private String barcode;
 
     public static ProductDetailResponse of(Product product) {
         return ProductDetailResponse.builder()
@@ -25,6 +26,7 @@ public class ProductDetailResponse {
                 .imageUrl(product.getImageUrl())
                 .rating(product.getRating())
                 .reviewCount(product.getReviewCount())
+                .barcode(product.getBarcode())
                 .build();
     }
 }
