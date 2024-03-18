@@ -1,9 +1,6 @@
 package com.s001.shoppingmall.product.dto;
 
 import com.s001.shoppingmall.product.entity.Product;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +16,7 @@ public class ProductDetailResponse {
     private String imageUrl;
     private double rating;
     private int reviewCount;
+    private String barcode;
 
     public static ProductDetailResponse of(Product product) {
         return ProductDetailResponse.builder()
@@ -28,6 +26,7 @@ public class ProductDetailResponse {
                 .imageUrl(product.getImageUrl())
                 .rating(product.getRating())
                 .reviewCount(product.getReviewCount())
+                .barcode(product.getBarcode())
                 .build();
     }
 }

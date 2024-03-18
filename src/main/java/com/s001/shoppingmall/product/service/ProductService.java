@@ -2,6 +2,7 @@ package com.s001.shoppingmall.product.service;
 
 import com.s001.shoppingmall.product.dto.ProductDetailResponse;
 import com.s001.shoppingmall.product.dto.ProductRegisterParam;
+import com.s001.shoppingmall.product.dto.ProductResponse;
 import com.s001.shoppingmall.product.dto.ProductSearchCondition;
 import com.s001.shoppingmall.product.entity.Product;
 import com.s001.shoppingmall.product.repository.ProductRepository;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -23,6 +23,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+    @Transactional
     public Integer save(ProductRegisterParam param) {
         validateDuplicateBarcode(param.getBarcode());
         Product product = productRepository.save(Product.builder()
@@ -37,12 +38,12 @@ public class ProductService {
         return product.getId();
     }
 
-    public Page<Product> search(Pageable pageable, ProductSearchCondition searchCondition) {
+    public Page<ProductResponse> search(Pageable pageable, ProductSearchCondition searchCondition) {
         String keyword = searchCondition.getKeyword();
         if (Objects.nonNull(keyword) && !keyword.isBlank()) {
-            return productRepository.findAllByNameContaining(pageable, keyword);
+            return productRepository.findAllByNameContaining(pageable, keyword).map(ProductResponse::of);
         } else {
-            return productRepository.findAll(pageable);
+            return productRepository.findAll(pageable).map(ProductResponse::of);
         }
     }
 
