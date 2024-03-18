@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>상품 목록</h1>
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>price</th>
+        <th>rating</th>
+        <th>reviewCount</th>
+        <th>thumbnail</th>
+        <th>delete</th>
+    </tr>
+    <tr th:each="product: ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.rating}"></td>
+        <td th:text="${product.reviewCount}"></td>
+        <td th:text="${product.thumbnailImageUrl}"></td>
+        <td>
+            <button th:onclick="'deleteHandle(' + ${product.id} + ')'">Delete</button>
+        </td>
+    </tr>
+</table>
+<script>
+    const deleteHandle = (productId) => {
+        console.log(`remove ${productId}.`);
+        const form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/products/manage/" + productId);
+
+        const inputElement = document.createElement("input");
+        inputElement.setAttribute("type", "hidden");
+        inputElement.setAttribute("name", "_method");
+        inputElement.setAttribute("value", "delete");
+        form.appendChild(inputElement);
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</body>
+</html>

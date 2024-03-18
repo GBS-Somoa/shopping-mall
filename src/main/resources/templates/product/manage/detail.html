@@ -6,29 +6,38 @@
 </head>
 <body>
 
-<h1>상품 등록</h1>
-<form th:object="${productRegisterForm}" method="post">
+<h1>상품 상세 조회</h1>
+<form th:object="${product}" method="post">
     <div>
         <label for="name">상품명</label>
         <input type="text" id="name" th:field="*{name}"
-               placeholder="">
+               placeholder="" readonly>
     </div>
     <div>
         <label for="price">가격</label>
         <input type="number" id="price" th:field="*{price}"
-               placeholder="">
+               placeholder="" readonly>
     </div>
     <div>
         <label for="imageUrl">이미지</label>
         <input type="text" id="imageUrl" th:field="*{imageUrl}"
-               placeholder="">
+               placeholder="" readonly>
+    </div>
+    <div>
+        <label for="rating">평점</label>
+        <input type="text" id="rating" th:field="*{rating}"
+               placeholder="" readonly>
+    </div>
+    <div>
+        <label for="reviewCount">리뷰 수</label>
+        <input type="text" id="reviewCount" th:field="*{reviewCount}"
+               placeholder="" readonly>
     </div>
     <div>
         <label for="barcode">바코드</label>
         <input type="text" id="barcode" th:field="*{barcode}"
-               placeholder="">
+               placeholder="" readonly>
     </div>
-    <button type="submit">Submit</button>
 </form>
 
 </body>
