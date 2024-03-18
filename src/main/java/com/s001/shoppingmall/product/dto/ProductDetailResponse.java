@@ -1,9 +1,6 @@
 package com.s001.shoppingmall.product.dto;
 
 import com.s001.shoppingmall.product.entity.Product;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
