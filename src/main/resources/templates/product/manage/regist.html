@@ -22,6 +22,7 @@
         <label for="image">이미지</label>
         <input type="file" id="image"
                placeholder="" th:onchange="update()">
+        <button type="button" onclick="imageCancel()">취소</button>
     </div>
     <div>
         <label for="barcode">바코드</label>
@@ -35,12 +36,25 @@
 </form>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    const imageCancel = () => {
+        const image = document.querySelector('#image');
+        const imageUrl = document.querySelector('#imageUrl');
+        const thumbnailImageUrl = document.querySelector('#thumbnailImageUrl');
+        const productImage = document.querySelector('#productImage');
+        image.value = '';
+        image.removeAttribute('disabled');
+        imageUrl.value = null;
+        thumbnailImageUrl.value = null;
+        productImage.setAttribute('src', '');
+    }
+</script>
 <script th:inline="javascript">
     const update = () => {
         const apiKey = [[${@environment.getProperty('key.img_bb')}]];
+        const image = document.querySelector('#image');
         const imageUrl = document.querySelector('#imageUrl');
         const thumbnailImageUrl = document.querySelector('#thumbnailImageUrl');
-        const image = document.querySelector('#image');
         const productImage = document.querySelector('#productImage');
         let formData = new FormData();
         formData.append('image', image.files[0]);
@@ -58,6 +72,7 @@
                     imageUrl.value = data.image.url;
                     thumbnailImageUrl.value = data.thumb.url;
                     productImage.setAttribute('src', data.image.url);
+                    image.setAttribute('disabled', 'true');
                 }
             },
             error: function (error) {
