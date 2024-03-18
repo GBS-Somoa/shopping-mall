@@ -1,6 +1,5 @@
 package com.s001.shoppingmall.product.controller;
 
-import com.s001.shoppingmall.product.dto.ProductRegisterParam;
 import com.s001.shoppingmall.product.dto.ProductSearchCondition;
 import com.s001.shoppingmall.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -8,9 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Random;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
@@ -19,21 +18,6 @@ import java.util.Random;
 public class ProductController {
 
     private final ProductService productService;
-
-    @GetMapping("/regist")
-    public String registerForm(Model model) {
-        model.addAttribute("productRegisterForm", new ProductRegisterParam());
-        return "product/regist";
-    }
-
-    @PostMapping("/regist")
-    public String regist(@ModelAttribute("productRegisterForm") ProductRegisterParam param) {
-        Random random = new Random();
-        param.setRating(random.nextInt(50) / (double) 10);
-        param.setReviewCount(random.nextInt(1000));
-        int productId = productService.save(param);
-        return "redirect:/products/" + productId;
-    }
 
     @GetMapping("/{productId}")
     public String detail(@PathVariable("productId") Integer productId,
