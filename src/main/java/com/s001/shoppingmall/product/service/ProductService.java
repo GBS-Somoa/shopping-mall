@@ -60,8 +60,8 @@ public class ProductService {
     }
 
     private void validateDuplicateBarcode(String barcode) {
-        Optional<Product> optional = productRepository.findByBarcode(barcode);
-        if (optional.isPresent())
+        productRepository.findByBarcode(barcode).ifPresent(action -> {
             throw new IllegalArgumentException("duplicate barcode.");
+        });
     }
 }
