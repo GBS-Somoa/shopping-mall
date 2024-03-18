@@ -9,11 +9,14 @@ import com.s001.shoppingmall.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -40,11 +43,16 @@ public class ProductService {
 
     public Page<ProductResponse> search(Pageable pageable, ProductSearchCondition searchCondition) {
         String keyword = searchCondition.getKeyword();
+        Page<Product> page;
         if (Objects.nonNull(keyword) && !keyword.isBlank()) {
-            return productRepository.findAllByNameContaining(pageable, keyword).map(ProductResponse::of);
+            page = productRepository.findAllByNameContaining(pageable, keyword);
         } else {
-            return productRepository.findAll(pageable).map(ProductResponse::of);
+            page = productRepository.findAll(pageable);
         }
+        return new PageImpl<>(page.getContent()
+            .stream()
+            .map(ProductResponse::of)
+            .toList(), page.getPageable(), page.getTotalElements());
     }
 
     public ProductDetailResponse findOne(Integer id) {
