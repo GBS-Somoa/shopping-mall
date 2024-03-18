@@ -27,7 +27,11 @@
         <td th:text="${product.price}"></td>
         <td th:text="${product.rating}"></td>
         <td th:text="${product.reviewCount}"></td>
-        <td th:text="${product.thumbnailImageUrl}"></td>
+        <td>
+            <span th:if="!${product.thumbnailImageUrl}">상품 이미지 없음</span>
+            <img th:if="${product.thumbnailImageUrl}"
+                 th:src="${product.thumbnailImageUrl}" alt="productImage"/>
+        </td>
         <td>
             <button th:onclick="'deleteHandle(' + ${product.id} + ')'">Delete</button>
         </td>

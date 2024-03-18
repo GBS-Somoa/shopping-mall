@@ -38,6 +38,10 @@
         <input type="text" id="barcode" th:field="*{barcode}"
                placeholder="" readonly>
     </div>
+    <td>
+        <img th:if="*{imageUrl}"
+             th:src="*{imageUrl}" alt="productImage"/>
+    </td>
     <a href="/products">상품 목록</a>
 </form>
 
