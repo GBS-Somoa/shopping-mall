@@ -7,7 +7,7 @@
 <body>
 
 <h1>상품 상세 조회</h1>
-<form th:object="${product}" method="post">
+<form th:object="${product}">
     <div>
         <label for="name">상품명</label>
         <input type="text" id="name" th:field="*{name}"
@@ -42,8 +42,47 @@
         <img th:if="*{imageUrl}"
              th:src="*{imageUrl}" alt="productImage"/>
     </td>
-    <a href="/products">상품 목록</a>
+    <button type="button"
+            class="buyButton"
+            th:onclick="'buy(' + *{id} + ')'">구매하기</button>
+    <a href="/products">상품 목록</a>`
 </form>
+
+<script>
+    const buy = (productId) => {
+        const randomCount = Math.floor(Math.random() * 3) + 1;
+
+        const orderData = {
+            deliveryFee: 2500,
+            recipientName: "김싸피",
+            recipientContact: "010-1234-5678",
+            deliveryAddress: "서울특별시 강남구 역삼대로 212 멀티캠퍼스",
+            orderProducts: [
+                {
+                    productId: productId,
+                    count: randomCount
+                }
+            ]
+        };
+
+        fetch('/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData),
+        })
+            .then(response => response.json())
+            .then(orderId => {
+                console.log('Success:', orderId);
+                window.location.href = '/orders/completed/' + orderId;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('결제 오류가 발생했습니다.');
+            });
+    }
+</script>
 
 </body>
 </html>

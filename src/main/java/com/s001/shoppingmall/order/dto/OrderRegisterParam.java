@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 public class OrderRegisterParam {
 
-    private int paymentAmount;
     private int deliveryFee;
     private String recipientName;
     private String recipientContact;
@@ -17,7 +16,6 @@ public class OrderRegisterParam {
 
     public Order toEntity() {
         return Order.builder()
-                .paymentAmount(paymentAmount)
                 .deliveryFee(deliveryFee)
                 .recipientName(recipientName)
                 .recipientContact(recipientContact)

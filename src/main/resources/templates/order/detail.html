@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>주문 상세 조회</title>
+    <style>
+        div {
+            margin-bottom: 10px;
+        }
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h1>주문 상세 조회</h1>
+    <form th:object="${order}">
+        <div>
+            <label for="id">주문번호</label>
+            <input type="text" id="id" th:value="*{id}" readonly>
+        </div>
+        <div>
+            <label for="orderDate">주문날짜</label>
+            <input type="text" id="orderDate" th:value="*{orderDate}" readonly>
+        </div>
+        <div>
+            <label for="recipientName">받는 분</label>
+            <input type="text" id="recipientName" th:value="*{recipientName}" readonly>
+            <label for="recipientContact">연락처</label>
+            <input type="text" id="recipientContact" th:value="*{recipientContact}" readonly>
+        </div>
+        <div>
+            <label for="deliveryAddress">배송 주소</label>
+            <input type="text" id="deliveryAddress" th:value="*{deliveryAddress}" readonly>
+        </div>
+        <div>
+            <label for="paymentStatus">결제 상태 </label>
+            <select id="paymentStatus" th:field="*{paymentStatus}">
+                <option value="COMPLETED" th:selected="${order.paymentStatus == T(com.s001.shoppingmall.order.entity.PaymentStatus).COMPLETED}">결제완료</option>
+                <option value="REFUNDED" th:selected="${order.paymentStatus == T(com.s001.shoppingmall.order.entity.PaymentStatus).REFUNDED}">환불완료</option>
+            </select>
+        </div>
+        <div>
+            <label for="deliveryStatus">배송 상태</label>
+            <select id="deliveryStatus" th:field="*{deliveryStatus}">
+                <option value="ORDER_COMPLETED" th:selected="${order.deliveryStatus == T(com.s001.shoppingmall.order.entity.DeliveryStatus).ORDER_COMPLETED}">주문완료</option>
+                <option value="DELIVERY_IN_PROGRESS" th:selected="${order.deliveryStatus == T(com.s001.shoppingmall.order.entity.DeliveryStatus).DELIVERY_IN_PROGRESS}">배송중</option>
+                <option value="DELIVERY_COMPLETED" th:selected="${order.deliveryStatus == T(com.s001.shoppingmall.order.entity.DeliveryStatus).DELIVERY_COMPLETED}">배송완료</option>
+                <option value="ORDER_CANCELED" th:selected="${order.deliveryStatus == T(com.s001.shoppingmall.order.entity.DeliveryStatus).ORDER_CANCELED}">주문취소</option>
+            </select>
+        </div>
+        <div>
+            <label for="productsPrice">상품 금액</label>
+            <input type="number" id="productsPrice" th:value="*{paymentAmount - deliveryFee}" readonly> 원
+        </div>
+        <div>
+            <label for="deliveryFee">배송비</label>
+            <input type="number" id="deliveryFee" th:value="*{deliveryFee}" readonly> 원
+        </div>
+        <div>
+            <label for="paymentAmount">총 결제 금액</label>
+            <input type="number" id="paymentAmount" th:value="*{paymentAmount}" readonly> 원
+        </div>
+
+        <h2>주문한 상품</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>상품 ID</th>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>수량</th>
+                <th>이미지</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : *{orderProducts}">
+                <td th:text="${product.productId}">상품 ID</td>
+                <td th:text="${product.name}">상품명</td>
+                <td th:text="${product.price}">가격</td>
+                <td th:text="${product.count}">수량</td>
+                <td><img th:if="${product.imageUrl}" th:src="${product.imageUrl}" alt="Product Image" style="height: 50px;"/></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <a href="/orders">주문 목록</a>
+    <a href="/home">홈으로</a>
+</body>
+</html>

@@ -21,7 +21,7 @@ public class OrderProductDetailResponse {
                 .productId(orderProduct.getProduct().getId())
                 .name(orderProduct.getProduct().getName())
                 .price(orderProduct.getProduct().getPrice())
-                .imageUrl(orderProduct.getProduct().getImageUrl())
+                .imageUrl(orderProduct.getProduct().getThumbnailImageUrl())
                 .count(orderProduct.getCount())
                 .build();
     }
