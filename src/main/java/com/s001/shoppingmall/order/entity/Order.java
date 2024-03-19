@@ -26,6 +26,7 @@ public class Order extends BaseEntity {
     private int paymentAmount;
 
     @Column(name = "order_payment_status", nullable = false)
+    @Enumerated(EnumType.STRING)
     @Setter
     private PaymentStatus paymentStatus;
 
@@ -33,6 +34,7 @@ public class Order extends BaseEntity {
     private int deliveryFee;
 
     @Column(name = "order_delivery_status", nullable = false)
+    @Enumerated(EnumType.STRING)
     @Setter
     private DeliveryStatus deliveryStatus;
 
