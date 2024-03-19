@@ -67,7 +67,7 @@ public class OrderService {
         return OrderDetailResponse.of(order);
     }
 
-    public Map<Integer, Integer> getCountMap(List<OrderProductRegisterParam> params) {
+    private Map<Integer, Integer> getCountMap(List<OrderProductRegisterParam> params) {
         return params.stream()
                 .collect(Collectors.toMap(
                         OrderProductRegisterParam::getProductId,
