@@ -32,7 +32,7 @@ public class Product extends BaseEntity {
     @Column(name = "product_rating", nullable = false)
     private double rating;
 
-    @Column(name = "product_comment_count", nullable = false)
+    @Column(name = "product_review_count", nullable = false)
     private int reviewCount;
 
     @Column(name = "product_barcode", unique = true)
