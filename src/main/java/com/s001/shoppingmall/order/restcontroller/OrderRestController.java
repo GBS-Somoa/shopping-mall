@@ -3,7 +3,6 @@ package com.s001.shoppingmall.order.restcontroller;
 import com.s001.shoppingmall.order.dto.OrderRegisterParam;
 import com.s001.shoppingmall.order.dto.OrderUpdateParam;
 import com.s001.shoppingmall.order.service.OrderService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class OrderRestController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody OrderRegisterParam param, HttpServletResponse response) {
+    public ResponseEntity<?> createOrder(@RequestBody OrderRegisterParam param) {
         Integer orderId = orderService.save(param);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
