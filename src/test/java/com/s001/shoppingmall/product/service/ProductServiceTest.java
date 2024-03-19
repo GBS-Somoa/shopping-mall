@@ -4,6 +4,8 @@ import com.s001.shoppingmall.product.dto.ProductDetailResponse;
 import com.s001.shoppingmall.product.dto.ProductRegisterParam;
 import com.s001.shoppingmall.product.dto.ProductSearchCondition;
 import com.s001.shoppingmall.product.entity.Product;
+import com.s001.shoppingmall.product.exception.DuplicateBarcodeException;
+import com.s001.shoppingmall.product.exception.ProductNotFoundException;
 import com.s001.shoppingmall.product.repository.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -82,7 +84,7 @@ class ProductServiceTest {
 
         // assert
         assertThatThrownBy(() -> productService.save(param))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(DuplicateBarcodeException.class);
 
         // then
         verify(productRepository, times(1)).findByBarcode("ABCD-1234");
@@ -169,7 +171,7 @@ class ProductServiceTest {
 
         // assert
         assertThatThrownBy(() -> productService.findOne(productId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ProductNotFoundException.class);
 
         // then
         verify(productRepository, times(1)).findById(productId);
@@ -205,7 +207,7 @@ class ProductServiceTest {
 
         // assert
         assertThatThrownBy(() -> productService.findOne(productId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ProductNotFoundException.class);
 
         // then
         verify(productRepository, times(1)).findById(productId);

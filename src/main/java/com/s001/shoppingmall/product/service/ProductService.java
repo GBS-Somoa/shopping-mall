@@ -5,6 +5,8 @@ import com.s001.shoppingmall.product.dto.ProductRegisterParam;
 import com.s001.shoppingmall.product.dto.ProductResponse;
 import com.s001.shoppingmall.product.dto.ProductSearchCondition;
 import com.s001.shoppingmall.product.entity.Product;
+import com.s001.shoppingmall.product.exception.DuplicateBarcodeException;
+import com.s001.shoppingmall.product.exception.ProductNotFoundException;
 import com.s001.shoppingmall.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,20 +59,20 @@ public class ProductService {
 
     public ProductDetailResponse findOne(Integer id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("invalid product id."));
+                .orElseThrow(ProductNotFoundException::new);
         return ProductDetailResponse.of(product);
     }
 
     @Transactional
     public void delete(Integer id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("invalid product id."));
+                .orElseThrow(ProductNotFoundException::new);
         productRepository.delete(product);
     }
 
     private void validateDuplicateBarcode(String barcode) {
         productRepository.findByBarcode(barcode).ifPresent(action -> {
-            throw new IllegalArgumentException("duplicate barcode.");
+            throw new DuplicateBarcodeException();
         });
     }
 }
