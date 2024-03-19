@@ -21,7 +21,7 @@
         </div>
         <div>
             <label for="orderDate">주문날짜</label>
-            <input type="text" id="orderDate" th:value="*{orderDate}" readonly>
+            <input type="text" id="orderDate" th:value="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}" readonly>
         </div>
         <div>
             <label for="recipientName">받는 분</label>
@@ -35,14 +35,14 @@
         </div>
         <div>
             <label for="paymentStatus">결제 상태 </label>
-            <select id="paymentStatus" th:field="*{paymentStatus}">
+            <select id="paymentStatus" th:attr="onchange=|update(${order.id}, 'paymentStatus', this.value)|">
                 <option value="COMPLETED" th:selected="${order.paymentStatus == T(com.s001.shoppingmall.order.entity.PaymentStatus).COMPLETED}">결제완료</option>
                 <option value="REFUNDED" th:selected="${order.paymentStatus == T(com.s001.shoppingmall.order.entity.PaymentStatus).REFUNDED}">환불완료</option>
             </select>
         </div>
         <div>
             <label for="deliveryStatus">배송 상태</label>
-            <select id="deliveryStatus" th:field="*{deliveryStatus}">
+            <select id="deliveryStatus" th:attr="onchange=|update(${order.id}, 'deliveryStatus', this.value)|">
                 <option value="ORDER_COMPLETED" th:selected="${order.deliveryStatus == T(com.s001.shoppingmall.order.entity.DeliveryStatus).ORDER_COMPLETED}">주문완료</option>
                 <option value="DELIVERY_IN_PROGRESS" th:selected="${order.deliveryStatus == T(com.s001.shoppingmall.order.entity.DeliveryStatus).DELIVERY_IN_PROGRESS}">배송중</option>
                 <option value="DELIVERY_COMPLETED" th:selected="${order.deliveryStatus == T(com.s001.shoppingmall.order.entity.DeliveryStatus).DELIVERY_COMPLETED}">배송완료</option>
@@ -87,4 +87,27 @@
     <a href="/orders">주문 목록</a>
     <a href="/home">홈으로</a>
 </body>
+<script>
+    function update(orderId, statusType, statusValue) {
+        fetch(`/api/orders/${orderId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                [statusType]: statusValue
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("상태가 업데이트 되었습니다.");
+                } else {
+                    alert("상태 업데이트에 실패했습니다.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
 </html>
