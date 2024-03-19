@@ -43,10 +43,10 @@
         <div>
             <label for="deliveryStatus">배송 상태</label>
             <select id="deliveryStatus" th:attr="onchange=|update(${order.id}, 'deliveryStatus', this.value)|">
-                <option value="ORDER_COMPLETED" th:selected="${order.deliveryStatus == 'ORDER_COMPLETED'}">주문완료</option>
-                <option value="DELIVERY_IN_PROGRESS" th:selected="${order.deliveryStatus == 'DELIVERY_IN_PROGRESS'}">배송중</option>
-                <option value="DELIVERY_COMPLETED" th:selected="${order.deliveryStatus == 'DELIVERY_COMPLETED'}">배송완료</option>
-                <option value="ORDER_CANCELED" th:selected="${order.deliveryStatus == 'ORDER_CANCELED'}">주문취소</option>
+                <option value="ORDER_COMPLETED" th:selected="${order.deliveryStatus == T(com.s001.shoppingmall.order.entity.DeliveryStatus).ORDER_COMPLETED}">주문완료</option>
+                <option value="DELIVERY_IN_PROGRESS" th:selected="${order.deliveryStatus == T(com.s001.shoppingmall.order.entity.DeliveryStatus).DELIVERY_IN_PROGRESS}">배송중</option>
+                <option value="DELIVERY_COMPLETED" th:selected="${order.deliveryStatus == T(com.s001.shoppingmall.order.entity.DeliveryStatus).DELIVERY_COMPLETED}">배송완료</option>
+                <option value="ORDER_CANCELED" th:selected="${order.deliveryStatus == T(com.s001.shoppingmall.order.entity.DeliveryStatus).ORDER_CANCELED}">주문취소</option>
             </select>
         </div>
         <div>
