@@ -58,12 +58,6 @@ class ProductControllerTest {
 	}
 
 	@Test
-	@DisplayName("[GET][ERROR] 상품 상세 조회 / 유효하지 않는 상품 번호")
-	void detailTest_Fail() throws Exception {
-		// test code
-	}
-
-	@Test
 	@DisplayName("[GET] 상품 목록 조회")
 	void listTest() throws Exception {
 		// given
