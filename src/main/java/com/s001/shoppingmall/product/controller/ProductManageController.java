@@ -37,8 +37,13 @@ public class ProductManageController {
         Random random = new Random();
         param.setRating(random.nextInt(50) / (double) 10);
         param.setReviewCount(random.nextInt(1000));
-        int productId = productService.save(param);
-        return "redirect:/products/manage/" + productId;
+        try {
+            int productId = productService.save(param);
+            return "redirect:/products/manage/" + productId;
+        } catch (IllegalArgumentException e) {
+            bindingResult.rejectValue("barcode", "Duplicate", "이미 등록된 바코드입니다.");
+        }
+        return "product/manage/register";
     }
 
     @GetMapping("/{productId}")
