@@ -58,7 +58,7 @@ class OrderServiceTest {
         orderRegisterParam.setRecipientName(ORDER_RECIPIENT_NAME);
         orderRegisterParam.setRecipientContact(ORDER_RECIPIENT_CONTACT);
         orderRegisterParam.setDeliveryAddress(ORDER_DELIVERY_ADDRESS);
-        orderRegisterParam.setOrderProducts(createDummyOrderProducts());
+        orderRegisterParam.setOrderProducts(getDummyOrderProducts());
 
         Integer orderId = 1;
         Order savedOrder = getDummyOrder(orderId);
@@ -166,7 +166,7 @@ class OrderServiceTest {
         return product;
     }
 
-    private List<OrderProductRegisterParam> createDummyOrderProducts() {
+    private List<OrderProductRegisterParam> getDummyOrderProducts() {
         OrderProductRegisterParam productParam1 = new OrderProductRegisterParam();
         productParam1.setProductId(1);
         productParam1.setCount(2);

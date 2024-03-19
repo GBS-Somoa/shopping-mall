@@ -8,8 +8,8 @@ import java.util.List;
 @Data
 public class OrderRegisterParam {
 
-    private Integer paymentAmount;
-    private Integer deliveryFee;
+    private int paymentAmount;
+    private int deliveryFee;
     private String recipientName;
     private String recipientContact;
     private String deliveryAddress;

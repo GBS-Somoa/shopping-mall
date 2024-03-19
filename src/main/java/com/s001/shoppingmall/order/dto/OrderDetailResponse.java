@@ -15,8 +15,8 @@ public class OrderDetailResponse {
 
     private Integer id;
     private LocalDateTime orderDate;
-    private Integer paymentAmount;
-    private Integer deliveryFee;
+    private int paymentAmount;
+    private int deliveryFee;
     private String recipientName;
     private String recipientContact;
     private String deliveryAddress;

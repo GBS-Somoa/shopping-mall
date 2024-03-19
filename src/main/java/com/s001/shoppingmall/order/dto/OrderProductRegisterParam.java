@@ -6,5 +6,5 @@ import lombok.Data;
 public class OrderProductRegisterParam {
 
     private Integer productId;
-    private Integer count;
+    private int count;
 }

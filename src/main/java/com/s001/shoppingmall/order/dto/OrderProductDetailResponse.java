@@ -13,7 +13,7 @@ public class OrderProductDetailResponse {
     private String name;
     private int price;
     private String imageUrl;
-    private Integer count;
+    private int count;
 
     public static OrderProductDetailResponse of(OrderProduct orderProduct) {
         return OrderProductDetailResponse.builder()
