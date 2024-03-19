@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>주문 완료</h1>
+    <h3>주문이 정상적으로 완료 되었습니다.</h3>
+
+    <form th:object="${order}">
+        <div>
+            <label for="id">주문번호</label>
+            <input type="text" id="id" th:field="*{id}"
+                   placeholder="" readonly>
+        </div>
+        <div>
+            <label for="recipientName">받는 분</label>
+            <input type="text" id="recipientName" th:field="*{recipientName}"
+                   placeholder="" readonly>
+            /
+            <input type="text" id="recipientContact" th:field="*{recipientContact}"
+                   placeholder="" readonly>
+        </div>
+        <div>
+
+        </div>
+        <div>
+            <label for="paymentAmount">결제금액</label>
+            <input type="number" id="paymentAmount" th:field="*{paymentAmount}"
+                   placeholder="" readonly> 원
+        </div>
+        <div>
+            <br> 결제 수단 <br>
+            <label for="paymentAmount">카드결제(싸피카드)</label>
+            <input type="number" id="paymentAmountAsThisMethod" th:field="*{paymentAmount}"
+                   placeholder="" readonly> 원
+        </div>
+    </form>
+    <a href="/home">홈으로</a>
+</body>
+</html>
