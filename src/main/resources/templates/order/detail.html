@@ -50,12 +50,16 @@
             </select>
         </div>
         <div>
-            <label for="paymentAmount">결제 금액</label>
-            <input type="number" id="paymentAmount" th:value="*{paymentAmount}" readonly> 원
+            <label for="productsPrice">상품 금액</label>
+            <input type="number" id="productsPrice" th:value="*{paymentAmount - deliveryFee}" readonly> 원
         </div>
         <div>
             <label for="deliveryFee">배송비</label>
             <input type="number" id="deliveryFee" th:value="*{deliveryFee}" readonly> 원
+        </div>
+        <div>
+            <label for="paymentAmount">총 결제 금액</label>
+            <input type="number" id="paymentAmount" th:value="*{paymentAmount}" readonly> 원
         </div>
 
         <h2>주문한 상품</h2>
