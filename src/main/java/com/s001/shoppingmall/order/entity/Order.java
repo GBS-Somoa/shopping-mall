@@ -59,4 +59,11 @@ public class Order extends BaseEntity {
         this.paymentStatus = PaymentStatus.COMPLETED;
         this.deliveryStatus = DeliveryStatus.ORDER_COMPLETED;
     }
+
+    public void calculatePaymentAmount() {
+        int totalPrice = orderProducts.stream()
+                .mapToInt(OrderProduct::getTotalPrice)
+                .sum();
+        this.paymentAmount = totalPrice + deliveryFee;
+    }
 }

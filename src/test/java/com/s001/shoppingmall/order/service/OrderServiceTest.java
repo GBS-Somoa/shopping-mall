@@ -53,7 +53,6 @@ class OrderServiceTest {
     @DisplayName("주문 등록에 성공한다.")
     void saveTest() {
         OrderRegisterParam orderRegisterParam = new OrderRegisterParam();
-        orderRegisterParam.setPaymentAmount(ORDER_PAYMENT_AMOUNT);
         orderRegisterParam.setDeliveryFee(ORDER_DELIVERY_FEE);
         orderRegisterParam.setRecipientName(ORDER_RECIPIENT_NAME);
         orderRegisterParam.setRecipientContact(ORDER_RECIPIENT_CONTACT);
@@ -74,6 +73,7 @@ class OrderServiceTest {
         verify(orderRepository, times(1)).save(any(Order.class));
         verify(orderProductRepository, times(1)).saveAll(anyList());
         assertThat(savedId).isEqualTo(orderId);
+        assertThat(savedOrder.getPaymentAmount()).isEqualTo(42_500);
         assertThat(savedOrder.getOrderProducts().size()).isEqualTo(2);
     }
 
@@ -161,7 +161,9 @@ class OrderServiceTest {
     }
 
     private Product getDummyProduct(int id) {
-        Product product = Product.builder().build();
+        Product product = Product.builder()
+                .price(10_000 * id)
+                .build();
         ReflectionTestUtils.setField(product, "id", id);
         return product;
     }

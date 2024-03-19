@@ -39,6 +39,8 @@ public class OrderService {
                         .count(countMap.get(product.getId()))
                         .build()
                 ).toList();
+
+        order.calculatePaymentAmount();
         orderProductRepository.saveAll(orderProducts);
 
         return order.getId();

@@ -41,4 +41,8 @@ public class OrderProduct extends BaseEntity {
         this.order = order;
         order.getOrderProducts().add(this);
     }
+
+    public int getTotalPrice() {
+        return product.getPrice() * count;
+    }
 }
