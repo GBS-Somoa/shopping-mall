@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class OrderUpdateParam {
 
-    PaymentStatus paymentStatus = null;
-    DeliveryStatus deliveryStatus = null;
+    PaymentStatus paymentStatus;
+    DeliveryStatus deliveryStatus;
 }
