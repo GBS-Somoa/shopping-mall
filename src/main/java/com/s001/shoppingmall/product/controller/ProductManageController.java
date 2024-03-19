@@ -1,23 +1,19 @@
 package com.s001.shoppingmall.product.controller;
 
-import java.util.Random;
-
+import com.s001.shoppingmall.product.dto.ProductRegisterParam;
+import com.s001.shoppingmall.product.dto.ProductSearchCondition;
+import com.s001.shoppingmall.product.exception.DuplicateBarcodeException;
+import com.s001.shoppingmall.product.service.ProductService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-import com.s001.shoppingmall.product.dto.ProductRegisterParam;
-import com.s001.shoppingmall.product.dto.ProductSearchCondition;
-import com.s001.shoppingmall.product.service.ProductService;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Random;
 
 @Slf4j
 @Controller
@@ -27,19 +23,29 @@ public class ProductManageController {
 
     private final ProductService productService;
 
-    @GetMapping("/regist")
+    @GetMapping("/register")
     public String registerForm(Model model) {
         model.addAttribute("productRegisterForm", new ProductRegisterParam());
-        return "product/manage/regist";
+        return "product/manage/register";
     }
 
     @PostMapping
-    public String regist(@ModelAttribute("productRegisterForm") ProductRegisterParam param) {
+    public String register(@Valid @ModelAttribute("productRegisterForm") ProductRegisterParam param,
+                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "product/manage/register";
+        }
         Random random = new Random();
         param.setRating(random.nextInt(50) / (double) 10);
         param.setReviewCount(random.nextInt(1000));
-        int productId = productService.save(param);
-        return "redirect:/products/manage/" + productId;
+
+        try {
+            int productId = productService.save(param);
+            return "redirect:/products/manage/" + productId;
+        } catch (DuplicateBarcodeException e) {
+            bindingResult.rejectValue("barcode", "Duplicate", "이미 등록된 바코드입니다.");
+        }
+        return "product/manage/register";
     }
 
     @GetMapping("/{productId}")
