@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -172,7 +173,7 @@ class ProductManageControllerTest {
     @DisplayName("[GET] 상품 목록 조회")
     void listTest() throws Exception {
         // given
-        Page<ProductResponse> result = new PageImpl<>(new ArrayList<>());
+        Page<ProductResponse> result = new PageImpl<>(new ArrayList<>(), PageRequest.of(0, 2), 10);
 
         // mock
         when(productService.search(any(Pageable.class), any(ProductSearchCondition.class)))

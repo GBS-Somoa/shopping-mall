@@ -47,6 +47,7 @@
 
 <!-- Pagination -->
 <div class="d-flex justify-content-center"
+     th:if="${products.totalPages > products.pageable.pageNumber}"
      th:object="${products.pageable}"
      th:with="pageLine = 10,
               pageNumber = *{pageNumber},
