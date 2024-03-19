@@ -4,6 +4,7 @@ import com.s001.shoppingmall.product.dto.ProductDetailResponse;
 import com.s001.shoppingmall.product.dto.ProductRegisterParam;
 import com.s001.shoppingmall.product.dto.ProductResponse;
 import com.s001.shoppingmall.product.dto.ProductSearchCondition;
+import com.s001.shoppingmall.product.exception.DuplicateBarcodeException;
 import com.s001.shoppingmall.product.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -154,6 +155,24 @@ class ProductManageControllerTest {
         // test
         testProductRegisterForm(param, "price", "Min");
         verify(productService, times(0)).save(any(ProductRegisterParam.class));
+    }
+
+    @Test
+    @DisplayName("[POST][ERROR] 상품 등록 / 이미 등록된 바코드")
+    void registerTest_Fail_DuplicateBarcode() throws Exception {
+        // given
+        ProductRegisterParam param = new ProductRegisterParam();
+        param.setName("세탁세제");
+        param.setBarcode("ABCD-1234");
+        param.setPrice(10000);
+
+        // mock
+        when(productService.save(any(ProductRegisterParam.class)))
+                .thenThrow(new DuplicateBarcodeException());
+
+        // test
+        testProductRegisterForm(param, "barcode", "Duplicate");
+        verify(productService, times(1)).save(any(ProductRegisterParam.class));
     }
 
     @Test
