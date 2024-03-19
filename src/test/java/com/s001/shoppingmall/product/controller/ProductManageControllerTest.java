@@ -24,7 +24,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @WebMvcTest(controllers = ProductManageController.class)
 class ProductManageControllerTest {
@@ -58,12 +57,6 @@ class ProductManageControllerTest {
                 .andExpect(view().name("product/manage/detail"));
 
         verify(productService, times(1)).findOne(productId);
-    }
-
-    @Test
-    @DisplayName("[GET][ERROR] 상품 상세 조회 / 유효하지 않는 상품 번호")
-    void detailTest_Fail() throws Exception {
-        // test code
     }
 
     @Test
@@ -216,12 +209,6 @@ class ProductManageControllerTest {
                 .andExpect(redirectedUrl("/products/manage"));
 
         verify(productService, times(1)).delete(productId);
-    }
-
-    @Test
-    @DisplayName("[DELETE][ERROR] 상품 목록 조회 / 유효하지 않는 상품 번호")
-    void deleteTest_Fail() throws Exception {
-
     }
 
     private void testProductRegisterForm(ProductRegisterParam param, String fieldName, String error) throws Exception {
