@@ -4,6 +4,7 @@ import com.s001.shoppingmall.product.dto.ProductDetailResponse;
 import com.s001.shoppingmall.product.dto.ProductRegisterParam;
 import com.s001.shoppingmall.product.dto.ProductResponse;
 import com.s001.shoppingmall.product.dto.ProductSearchCondition;
+import com.s001.shoppingmall.product.exception.DuplicateBarcodeException;
 import com.s001.shoppingmall.product.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -70,7 +72,7 @@ class ProductManageControllerTest {
         // given
 
         // when
-        ResultActions resultActions = mvc.perform(get("/products/manage/regist"));
+        ResultActions resultActions = mvc.perform(get("/products/manage/register"));
 
         // then
         resultActions
@@ -78,36 +80,99 @@ class ProductManageControllerTest {
                 .andDo(print())
                 .andExpect(handler().methodName("registerForm"))
                 .andExpect(model().attribute("productRegisterForm", new ProductRegisterParam()))
-                .andExpect(view().name("product/manage/regist"));
+                .andExpect(view().name("product/manage/register"));
     }
 
     @Test
     @DisplayName("[POST] 상품 등록")
-    void registTest() throws Exception {
+    void registerTest() throws Exception {
         // given
         final Integer productId = 1;
+
+        ProductRegisterParam param = new ProductRegisterParam();
+        param.setName("세탁세제");
+        param.setBarcode("ABCD-1234");
+        param.setPrice(10_000);
 
         // mock
         when(productService.save(any(ProductRegisterParam.class)))
                 .thenReturn(productId);
 
         // when
-        ResultActions resultActions = mvc.perform(post("/products/manage"));
+        ResultActions resultActions = mvc.perform(post("/products/manage")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("name", param.getName())
+                .param("barcode", param.getBarcode())
+                .param("price", String.valueOf(param.getPrice())));
 
         // then
         resultActions
                 .andExpect(status().is3xxRedirection())
                 .andDo(print())
-                .andExpect(handler().methodName("regist"))
+                .andExpect(handler().methodName("register"))
                 .andExpect(redirectedUrl("/products/manage/" + productId));
 
         verify(productService, times(1)).save(any(ProductRegisterParam.class));
     }
 
     @Test
-    @DisplayName("[POST][ERROR] 상품 등록 / 검증 실패")
-    void registTest_Fail() throws Exception {
+    @DisplayName("[POST][ERROR] 상품 등록 / 상품명 공백")
+    void registerTest_Fail_NameBlank() throws Exception {
+        // given
+        ProductRegisterParam param = new ProductRegisterParam();
+        param.setName(" ");
+        param.setBarcode("ABCD-1234");
+        param.setPrice(10_000);
 
+        // test
+        testProductRegisterForm(param, "name", "NotBlank");
+        verify(productService, times(0)).save(any(ProductRegisterParam.class));
+    }
+
+    @Test
+    @DisplayName("[POST][ERROR] 상품 등록 / 바코드 공백")
+    void registerTest_Fail_BarcodeBlank() throws Exception {
+        // given
+        ProductRegisterParam param = new ProductRegisterParam();
+        param.setName("세탁세제");
+        param.setBarcode("");
+        param.setPrice(10_000);
+
+        // test
+        testProductRegisterForm(param, "barcode", "NotBlank");
+        verify(productService, times(0)).save(any(ProductRegisterParam.class));
+    }
+
+    @Test
+    @DisplayName("[POST][ERROR] 상품 등록 / 음수 가격")
+    void registerTest_Fail_PriceNegative() throws Exception {
+        // given
+        ProductRegisterParam param = new ProductRegisterParam();
+        param.setName("세탁세제");
+        param.setBarcode("ABCD-1234");
+        param.setPrice(-500);
+
+        // test
+        testProductRegisterForm(param, "price", "Min");
+        verify(productService, times(0)).save(any(ProductRegisterParam.class));
+    }
+
+    @Test
+    @DisplayName("[POST][ERROR] 상품 등록 / 이미 등록된 바코드")
+    void registerTest_Fail_DuplicateBarcode() throws Exception {
+        // given
+        ProductRegisterParam param = new ProductRegisterParam();
+        param.setName("세탁세제");
+        param.setBarcode("ABCD-1234");
+        param.setPrice(10000);
+
+        // mock
+        when(productService.save(any(ProductRegisterParam.class)))
+                .thenThrow(new DuplicateBarcodeException());
+
+        // test
+        testProductRegisterForm(param, "barcode", "Duplicate");
+        verify(productService, times(1)).save(any(ProductRegisterParam.class));
     }
 
     @Test
@@ -157,5 +222,24 @@ class ProductManageControllerTest {
     @DisplayName("[DELETE][ERROR] 상품 목록 조회 / 유효하지 않는 상품 번호")
     void deleteTest_Fail() throws Exception {
 
+    }
+
+    private void testProductRegisterForm(ProductRegisterParam param, String fieldName, String error) throws Exception {
+        // when
+        ResultActions resultActions = mvc.perform(post("/products/manage")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("name", param.getName())
+                .param("barcode", param.getBarcode())
+                .param("price", String.valueOf(param.getPrice())));
+
+        // then
+        resultActions
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(handler().methodName("register"))
+                .andExpect(view().name("product/manage/register"))
+                .andExpect(model().errorCount(1))
+                .andExpect(model().attributeHasFieldErrors("productRegisterForm", fieldName))
+                .andExpect(model().attributeHasFieldErrorCode("productRegisterForm", fieldName, error));
     }
 }
