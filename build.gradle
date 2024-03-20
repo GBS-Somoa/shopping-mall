@@ -36,6 +36,10 @@ dependencies {
 
     // h2 db for test
     testRuntimeOnly 'com.h2database:h2'
+
+    // live reload 용도
+    compileOnly("org.springframework.boot:spring-boot-devtools")
+//    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.named('test') {
