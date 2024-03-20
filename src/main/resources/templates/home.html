@@ -2,22 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>소모아 - 쇼핑몰 테스팅 앱</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+<style>
+    html {
+        font-size: 50px;
+    }
+</style>
 <body>
 
-<h1>쇼핑몰 테스팅 앱</h1>
-<ul>
-    <li>
-        <a href="/products">상품 목록</a>
-    </li>
-    <li>
-        <a href="/products/manage">상품 관리</a>
-    </li>
-    <li>
-        <a href="/orders">주문 관리</a>
-    </li>
-</ul>
+<header class="flex p-2 items-center justify-start space-x-3 shadow shadow-sm w-full h-12">
+    <img th:src="@{/images/SSAG.COM.png}" alt="shoppingmall_logo" class="w-28 h-4">
+</header>
+
+<h1 class="text-lg font-bold text-center my-3">쇼핑몰 테스팅 앱</h1>
+<div class="grid grid-cols-2 gap-4 mx-5">
+    <a href="/products" class="block border border-3 bg-green-400 text-center font-bold rounded-lg flex items-center justify-center w-full py-10">
+        상품 목록
+    </a>
+
+    <a href="/products/manage" class="block border border-3 bg-blue-400 text-center font-bold rounded-lg flex items-center justify-center w-full py-10">
+        상품 관리
+    </a>
+
+    <a href="/orders" class="block border border-3 bg-yellow-400 text-center font-bold rounded-lg flex items-center justify-center w-full py-10">
+        주문 목록
+    </a>
+</div>
+
+
 
 </body>
 </html>
