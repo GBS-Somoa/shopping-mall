@@ -50,7 +50,7 @@
 
 <footer class="fixed bottom-0 left-0 w-full bg-white p-3 border border-4 flex justify-center space-x-8">
     <img th:src="@{/images/cartButton.png}" alt="" class="w-28">
-    <img th:src="@{/images/buyButton.png}" alt="" class="w-28" th:onclick="'buy(' + *{id} + ')'">
+    <img th:src="@{/images/buyButton.png}" alt="" class="w-28" th:onclick="'buy(' + ${product.id} + ')'">
 </footer>
 
 
@@ -61,6 +61,7 @@ function goBack() {
 }
 const buy = (productId) => {
     const randomCount = Math.floor(Math.random() * 3) + 1;
+
 
     const orderData = {
         deliveryFee: 2500,
@@ -84,6 +85,7 @@ const buy = (productId) => {
     })
         .then(response => response.json())
         .then(orderId => {
+            console.log(productId);
             console.log('Success:', orderId);
             window.location.href = '/orders/completed/' + orderId;
         })
