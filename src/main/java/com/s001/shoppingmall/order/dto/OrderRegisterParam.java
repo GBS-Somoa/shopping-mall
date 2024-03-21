@@ -13,6 +13,7 @@ public class OrderRegisterParam {
     private String recipientContact;
     private String deliveryAddress;
     private List<OrderProductRegisterParam> orderProducts;
+    private AffiliateParam affiliateParam;
 
     public Order toEntity() {
         return Order.builder()

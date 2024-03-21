@@ -2,7 +2,7 @@ package com.s001.shoppingmall.product.entity;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ProductTest {
 

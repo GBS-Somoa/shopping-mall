@@ -47,6 +47,10 @@ public class Order extends BaseEntity {
     @Column(name = "order_delivery_address", nullable = false)
     private String deliveryAddress;
 
+    @OneToOne(mappedBy = "order", fetch = FetchType.LAZY)
+    @Setter
+    private AffiliateOrder affiliateOrder;
+
     @OneToMany(mappedBy = "order")
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
