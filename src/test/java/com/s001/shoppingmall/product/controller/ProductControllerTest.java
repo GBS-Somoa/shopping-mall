@@ -1,12 +1,9 @@
 package com.s001.shoppingmall.product.controller;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.ArrayList;
-
+import com.s001.shoppingmall.product.dto.ProductDetailResponse;
+import com.s001.shoppingmall.product.dto.ProductResponse;
+import com.s001.shoppingmall.product.dto.ProductSearchCondition;
+import com.s001.shoppingmall.product.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +16,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.s001.shoppingmall.product.dto.ProductDetailResponse;
-import com.s001.shoppingmall.product.dto.ProductResponse;
-import com.s001.shoppingmall.product.dto.ProductSearchCondition;
-import com.s001.shoppingmall.product.service.ProductService;
+import java.util.ArrayList;
+
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = ProductController.class)
 class ProductControllerTest {
