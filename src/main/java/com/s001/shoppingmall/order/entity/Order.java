@@ -55,7 +55,7 @@ public class Order extends BaseEntity {
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     @Builder
-    public Order(int paymentAmount, int deliveryFee, String recipientName, String recipientContact, String deliveryAddress, AffiliateOrder affiliateOrder) {
+    public Order(int paymentAmount, int deliveryFee, String recipientName, String recipientContact, String deliveryAddress) {
         this.orderDate = LocalDateTime.now();
         this.paymentAmount = paymentAmount;
         this.deliveryFee = deliveryFee;
