@@ -8,4 +8,4 @@ COPY . .
 RUN chmod +x gradlew && ./gradlew clean build -x test
 RUN mv ${JAR_FILE} ./app.jar
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "-Duser.timezone=Asia/Seoul",  "app.jar"]

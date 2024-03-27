@@ -90,7 +90,7 @@ pipeline {
          when { expression { env.GIT_BRANCH == 'origin/master' || env.GIT_BRANCH == 'origin/develop'} }
          steps {
             sh """
-            docker run -d -p 8083:8080 --rm --name ${env.DOCKER_IMAGE_NAME}_test ${env.DOCKER_IMAGE_NAME}:latest
+            docker run -d -p 8083:8080 --rm -e TZ=Asia/Seoul --name ${env.DOCKER_IMAGE_NAME}_test ${env.DOCKER_IMAGE_NAME}:latest
             sleep 10
             curl -s -m 3 GET http://j10s001.p.ssafy.io:8083
             """
@@ -136,7 +136,7 @@ pipeline {
             if [ -n "\$image" ]; then
                docker rmi ${env.DOCKER_IMAGE_NAME}:old
             fi
-            docker run -d -p 8081:8080 --rm --name "${env.DOCKER_IMAGE_NAME}" ${env.DOCKER_IMAGE_NAME}:latest
+            docker run -d -p 8081:8080 --rm -e TZ=Asia/Seoul --name "${env.DOCKER_IMAGE_NAME}" ${env.DOCKER_IMAGE_NAME}:latest
             """
          }
          post {
