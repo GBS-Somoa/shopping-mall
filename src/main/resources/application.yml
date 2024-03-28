@@ -6,3 +6,9 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+
+somoa-service:
+  base-url: ${SOMOA_SERVICE_BASE_URL}
+  api:
+    order-save: ${SOMOA_SERVICE_ORDER_SAVE_API}
+    order-status-change: ${SOMOA_SERVICE_ORDER_STATUS_CHANGE_API}

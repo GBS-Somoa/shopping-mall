@@ -21,7 +21,12 @@ public class OrderRestController {
 
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderRegisterParam param) {
-        Integer orderId = orderService.save(param);
+        Integer orderId = 0;
+        try {
+            orderId = orderService.save(param);
+        } catch (RuntimeException e) {
+            ResponseEntity.internalServerError();
+        }
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{orderId}")
@@ -33,7 +38,6 @@ public class OrderRestController {
 
     @PatchMapping("/{orderId}")
     public ResponseEntity<?> updateOrderStatus(@PathVariable("orderId") Integer orderId, @RequestBody OrderUpdateParam param) {
-
         orderService.update(orderId, param);
         return ResponseEntity.ok().build();
     }
