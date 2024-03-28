@@ -10,5 +10,5 @@ public class SomoaApiResponse {
     private int status;
     private long timestamp;
     private String message;
-    private Map<Integer, Object> data;
+    private Map<String, Object> data;
 }

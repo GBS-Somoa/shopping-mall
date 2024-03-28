@@ -69,6 +69,9 @@ public class OrderService {
             log.info("apiRequest={}", apiRequest);
             boolean succeed = somoaApiService.callOrderSaveApi(apiRequest);
             log.info("서비스 앱 주문 생성 api 호출 - succeed={}", succeed);
+            if (!succeed) {
+                throw new RuntimeException("소모아 앱 API 호출 실패!");
+            }
         }
         return order.getId();
     }

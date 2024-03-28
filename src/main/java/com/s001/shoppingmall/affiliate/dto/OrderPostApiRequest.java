@@ -32,7 +32,7 @@ public class OrderPostApiRequest {
                 .supplyId(supplyId)
                 .orderStatus("배송중")
                 .productName(product.getName())
-                .productImg(product.getThumbnailImageUrl())
+                .productImg(product.getImageUrl())
                 .orderStore("SSAG")
                 .orderStoreId(String.valueOf(order.getId()))
                 .orderCount(orderCount)
