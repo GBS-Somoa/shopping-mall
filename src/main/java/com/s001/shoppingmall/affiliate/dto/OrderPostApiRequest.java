@@ -30,7 +30,7 @@ public class OrderPostApiRequest {
                 .groupId(groupId)
                 .userId(userId)
                 .supplyId(supplyId)
-                .orderStatus("배송중")
+                .orderStatus("주문 완료")
                 .productName(product.getName())
                 .productImg(product.getImageUrl())
                 .orderStore("SSAG")

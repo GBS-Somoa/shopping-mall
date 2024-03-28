@@ -1,6 +1,7 @@
 package com.s001.shoppingmall.order.service;
 
 import com.s001.shoppingmall.affiliate.dto.OrderPostApiRequest;
+import com.s001.shoppingmall.affiliate.dto.OrderStatusPatchApiRequest;
 import com.s001.shoppingmall.affiliate.service.SomoaApiService;
 import com.s001.shoppingmall.order.dto.*;
 import com.s001.shoppingmall.order.entity.AffiliateOrder;
@@ -57,16 +58,15 @@ public class OrderService {
                     .build();
             affiliateOrderRepository.save(affiliateOrder);
 
-            // TODO: 서비스 앱 측에 주문 정보 보내기
+            // 서비스 앱 측에 주문 정보 보내기
             AffiliateParam affiliateParam = param.getAffiliateParam();
             Integer groupId = affiliateParam.getGroupId();
             Integer userId = affiliateParam.getUserId();
             String supplyId = affiliateParam.getSupplyId();
 
-
             OrderPostApiRequest apiRequest = OrderPostApiRequest.of(groupId, userId, supplyId, order);
 
-            log.info("apiRequest={}", apiRequest);
+            log.info("서비스 앱 주문 생성 api 호출 - apiRequest={}", apiRequest);
             boolean succeed = somoaApiService.callOrderSaveApi(apiRequest);
             log.info("서비스 앱 주문 생성 api 호출 - succeed={}", succeed);
             if (!succeed) {
@@ -87,10 +87,16 @@ public class OrderService {
         if (param.getDeliveryStatus() != null) {
             order.setDeliveryStatus(param.getDeliveryStatus());
 
-            AffiliateOrder affiliateOrder = order.getAffiliateOrder();
-            if (affiliateOrder != null) {
-                // TODO : 서비스 측에 주문 상태 변경 이벤트 알림 보내기
-                log.info("서비스 앱 주문 상태 변경 api 호출 - orderId={}, deliveryStatus={}", order.getId(), order.getDeliveryStatus());
+            boolean isAffiliateOrder = affiliateOrderRepository.existsByOrderId(id);
+            if (isAffiliateOrder) {
+                // 서비스 측에 주문 상태 변경 이벤트 알림 보내기
+                OrderStatusPatchApiRequest apiRequest = OrderStatusPatchApiRequest.of(param.getDeliveryStatus());
+                log.info("서비스 앱 주문 상태 변경 api 호출 - apiRequest={}", apiRequest);
+                boolean succeed = somoaApiService.callOrderStatusChangeApi(id, apiRequest);
+                log.info("서비스 앱 주문 상태 변경 api 호출 - succeed={}", succeed);
+                if (!succeed) {
+                    throw new RuntimeException("소모아 앱 API 호출 실패!");
+                }
             }
         }
     }
