@@ -59,9 +59,27 @@
 function goBack() {
     window.history.back();
 }
+
+const getUrlParams = () => {
+    const url = new URL(window.location.href);
+    return url.searchParams;
+}
+
+const urlParams = getUrlParams();
+const userId = urlParams.get('user_id');
+const groupId = urlParams.get('group_id');
+const supplyId = urlParams.get('supply_id');
+
 const buy = (productId) => {
     const randomCount = Math.floor(Math.random() * 3) + 1;
-
+    let affiliateParam = null;
+    if (userId && groupId && supplyId) {
+        affiliateParam = {
+            userId: userId,
+            groupId: groupId,
+            supplyId: supplyId
+        }
+    }
 
     const orderData = {
         deliveryFee: 2500,
@@ -73,7 +91,8 @@ const buy = (productId) => {
                 productId: productId,
                 count: randomCount
             }
-        ]
+        ],
+        affiliateParam: affiliateParam
     };
 
     fetch('/api/orders', {
@@ -87,13 +106,14 @@ const buy = (productId) => {
         .then(orderId => {
             console.log(productId);
             console.log('Success:', orderId);
-            window.location.href = '/orders/completed/' + orderId;
+            // window.location.href = '/orders/completed/' + orderId;
         })
         .catch((error) => {
             console.error('Error:', error);
             alert('결제 오류가 발생했습니다.');
         });
 }
+
 </script>
 
 </body>

@@ -1,5 +1,7 @@
 package com.s001.shoppingmall.order.service;
 
+import com.s001.shoppingmall.affiliate.dto.OrderPostApiRequest;
+import com.s001.shoppingmall.affiliate.service.SomoaApiService;
 import com.s001.shoppingmall.order.dto.*;
 import com.s001.shoppingmall.order.entity.AffiliateOrder;
 import com.s001.shoppingmall.order.entity.Order;
@@ -30,18 +32,12 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final AffiliateOrderRepository affiliateOrderRepository;
 
+    // 소모아 서비스 API 서비스
+    private final SomoaApiService somoaApiService;
+
     @Transactional
     public Integer save(OrderRegisterParam param) {
         Order order = orderRepository.save(param.toEntity());
-
-        if (param.getAffiliateParam() != null) {
-            AffiliateOrder affiliateOrder = AffiliateOrder.builder()
-                                                .order(order)
-                                                .build();
-            affiliateOrderRepository.save(affiliateOrder);
-            // TODO: 서비스 앱 측에 주문 정보 보내기
-            log.info("서비스 앱 주문 생성 api 호출 - orderId : {}", order.getId());
-        }
 
         Map<Integer, Integer> countMap = getCountMap(param.getOrderProducts());
         List<OrderProduct> orderProducts = productRepository.findAllById(countMap.keySet()).stream()
@@ -55,6 +51,25 @@ public class OrderService {
         order.calculatePaymentAmount();
         orderProductRepository.saveAll(orderProducts);
 
+        if (param.getAffiliateParam() != null) {
+            AffiliateOrder affiliateOrder = AffiliateOrder.builder()
+                    .order(order)
+                    .build();
+            affiliateOrderRepository.save(affiliateOrder);
+
+            // TODO: 서비스 앱 측에 주문 정보 보내기
+            AffiliateParam affiliateParam = param.getAffiliateParam();
+            Integer groupId = affiliateParam.getGroupId();
+            Integer userId = affiliateParam.getUserId();
+            String supplyId = affiliateParam.getSupplyId();
+
+
+            OrderPostApiRequest apiRequest = OrderPostApiRequest.of(groupId, userId, supplyId, order);
+
+            log.info("apiRequest={}", apiRequest);
+            boolean succeed = somoaApiService.callOrderSaveApi(apiRequest);
+            log.info("서비스 앱 주문 생성 api 호출 - succeed={}", succeed);
+        }
         return order.getId();
     }
 

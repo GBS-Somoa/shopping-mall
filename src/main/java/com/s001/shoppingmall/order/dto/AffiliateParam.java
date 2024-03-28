@@ -7,4 +7,5 @@ public class AffiliateParam {
 
     Integer userId;
     Integer groupId;
+    String supplyId;
 }
