@@ -14,12 +14,12 @@ public class OrderPostApiRequest {
     private Integer userId;
     private String supplyId;
     private String orderStatus;
-    private String productName;
     private String orderStore;
     private String orderStoreId;
-    private String productImg;
     private int orderCount;
-    private String orderAmount;
+    private String productName;
+    private String productImg;
+    private String productBarcode;
 
     public static OrderPostApiRequest of(Integer groupId, Integer userId, String supplyId, Order order) {
         OrderProduct orderProduct = order.getOrderProducts().get(0);
@@ -31,12 +31,12 @@ public class OrderPostApiRequest {
                 .userId(userId)
                 .supplyId(supplyId)
                 .orderStatus("주문 완료")
-                .productName(product.getName())
-                .productImg(product.getImageUrl())
                 .orderStore("SSAG")
                 .orderStoreId(String.valueOf(order.getId()))
                 .orderCount(orderCount)
-                .orderAmount("1L")
+                .productName(product.getName())
+                .productImg(product.getImageUrl())
+                .productBarcode(product.getBarcode())
                 .build();
     }
 }
