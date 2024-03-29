@@ -7,8 +7,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class
-OrderStatusPatchApiRequest {
+public class OrderStatusPatchApiRequest {
 
 	private String orderStatus;
 
