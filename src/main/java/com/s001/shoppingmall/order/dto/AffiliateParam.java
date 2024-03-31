@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class AffiliateParam {
 
-    Integer userId;
+    String userId;
     Integer groupId;
     String supplyId;
 }

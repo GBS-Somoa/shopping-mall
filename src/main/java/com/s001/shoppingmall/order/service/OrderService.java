@@ -61,7 +61,7 @@ public class OrderService {
             // 서비스 앱 측에 주문 정보 보내기
             AffiliateParam affiliateParam = param.getAffiliateParam();
             Integer groupId = affiliateParam.getGroupId();
-            Integer userId = affiliateParam.getUserId();
+            String userId = affiliateParam.getUserId();
             String supplyId = affiliateParam.getSupplyId();
 
             OrderPostApiRequest apiRequest = OrderPostApiRequest.of(groupId, userId, supplyId, order);

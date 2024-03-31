@@ -11,7 +11,7 @@ import lombok.Data;
 public class OrderPostApiRequest {
 
     private Integer groupId;
-    private Integer userId;
+    private String userId;
     private String supplyId;
     private String orderStatus;
     private String orderStore;
@@ -21,7 +21,7 @@ public class OrderPostApiRequest {
     private String productImg;
     private String productBarcode;
 
-    public static OrderPostApiRequest of(Integer groupId, Integer userId, String supplyId, Order order) {
+    public static OrderPostApiRequest of(Integer groupId, String userId, String supplyId, Order order) {
         OrderProduct orderProduct = order.getOrderProducts().get(0);
         Product product = orderProduct.getProduct();
         int orderCount = orderProduct.getCount();
