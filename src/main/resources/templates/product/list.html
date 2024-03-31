@@ -31,12 +31,17 @@
             [[${userId}]]
             <div>
                 <span th:if="!${product.thumbnailImageUrl}"><img th:src="@{/images/tmp_product_img.png}" class="w-full" alt="productImage"></span>
-                <img th:if="${product.thumbnailImageUrl}" th:src="${product.thumbnailImageUrl}" alt="productImage"/>
+                <img th:if="${product.thumbnailImageUrl}" th:src="${product.thumbnailImageUrl}" class="w-full" alt="productImage" />
             </div>
         </div>
 
         <div class="mt-3">
-            <p th:text="${product.name}" class=""></p>
+            <p th:if="${#strings.length(product.name) > 20}" class="text-sm">
+                <span th:text="${#strings.substring(product.name, 0, 20)} + '...'"></span>
+            </p>
+            <p th:unless="${#strings.length(product.name) > 20}" class="text-sm">
+                <span th:text="${product.name}"></span>
+            </p>
             <p class="text-red-500 font-bold"><span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}" class="text-red-500 font-bold"></span>원</p>
             <div class="flex items-center">
                 <img th:src="@{/images/five_star.png}" alt="" class="h-4">
