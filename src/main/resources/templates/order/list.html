@@ -45,16 +45,16 @@
                 </td>
                 <td class="pl-3 py-3 whitespace-nowrap text-sm text-gray-900">
                     <div th:switch="${order.paymentStatus}">
-                        <p th:case="${T(com.s001.shoppingmall.order.entity.PaymentStatus).COMPLETED}" class="text-green-600">결제완료</p>
-                        <p th:case="${T(com.s001.shoppingmall.order.entity.PaymentStatus).REFUNDED}" class="text-red-600">환불완료</p>
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.PaymentStatus).COMPLETED}" class="text-green-600">결제완료</p>
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.PaymentStatus).REFUNDED}" class="text-red-600">환불완료</p>
                     </div>
                 </td>
                 <td class="pl-3 py-3 whitespace-nowrap text-sm text-gray-900">
                     <div th:switch="${order.deliveryStatus}">
-                        <p th:case="${T(com.s001.shoppingmall.order.entity.DeliveryStatus).DELIVERY_IN_PROGRESS}" class="text-yellow-600">배송중</p>
-                        <p th:case="${T(com.s001.shoppingmall.order.entity.DeliveryStatus).DELIVERY_COMPLETED}" class="text-blue-600">배송완료</p>
-                        <p th:case="${T(com.s001.shoppingmall.order.entity.DeliveryStatus).ORDER_CANCELED}" class="text-red-600">주문취소</p>
-                        <p th:case="${T(com.s001.shoppingmall.order.entity.DeliveryStatus).ORDER_COMPLETED}" class="text-green-600">주문완료</p>
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.DeliveryStatus).DELIVERY_IN_PROGRESS}" class="text-yellow-600">배송중</p>
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.DeliveryStatus).DELIVERY_COMPLETED}" class="text-blue-600">배송완료</p>
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.DeliveryStatus).ORDER_CANCELED}" class="text-red-600">주문취소</p>
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.DeliveryStatus).ORDER_COMPLETED}" class="text-green-600">주문완료</p>
                     </div>
                 </td>
             </tr>
