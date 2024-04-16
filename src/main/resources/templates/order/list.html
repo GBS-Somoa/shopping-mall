@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SSAG 쇼핑몰 - 주문 목록</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        html {
+            font-size: 50px;
+        }
+        body {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="flex p-2 items-center justify-between space-x-3 shadow shadow-sm w-full h-12">
+        <div class="flex items-center space-x-3">
+            <a href="/home">
+                <img th:src="@{/images/back_icon.png}" alt="" class="w-2">
+            </a>
+            <img th:src="@{/images/SSAG.COM.png}" alt="shoppingmall_logo" class="w-28 h-4">
+        </div>
+    </header>
+
+    <h1 class="font-bold text-2xl text-center m-3">주문 내역 관리</h1>
+    <div class="overflow-x-auto">
+        <table class="table-auto min-w-full divide-y divide-white">
+            <thead class="bg-blue-500">
+            <tr>
+                <th class="pl-3 py-3 text-left text-xs font-bold  text-white uppercase tracking-wider">주문번호</th>
+                <th class="pl-3 py-3 text-left text-xs font-bold  text-white uppercase tracking-wider">주문자</th>
+                <th class="pl-3 py-3 text-left text-xs font-bold  text-white uppercase tracking-wider">결제상태</th>
+                <th class="pl-3 py-3 text-left text-xs font-bold  text-white uppercase tracking-wider">배송상태</th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+            <tr th:each="order : ${orders}">
+                <td class="pl-5 py-3 whitespace-nowrap text-sm text-gray-900 font-bold">
+                    <a th:href="'/orders/' + ${order.id}" class="text-blue-600 hover:text-blue-900"  th:text="${order.id}"></a>
+                </td>
+                <td class="pl-3 py-3 whitespace-nowrap text-sm text-gray-900" th:text="${order.recipientName}">
+                </td>
+                <td class="pl-3 py-3 whitespace-nowrap text-sm text-gray-900">
+                    <div th:switch="${order.paymentStatus}">
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.PaymentStatus).COMPLETED}" class="text-green-600">결제완료</p>
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.PaymentStatus).REFUNDED}" class="text-red-600">환불완료</p>
+                    </div>
+                </td>
+                <td class="pl-3 py-3 whitespace-nowrap text-sm text-gray-900">
+                    <div th:switch="${order.deliveryStatus}">
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.DeliveryStatus).DELIVERY_IN_PROGRESS}" class="text-yellow-600">배송중</p>
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.DeliveryStatus).DELIVERY_COMPLETED}" class="text-blue-600">배송완료</p>
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.DeliveryStatus).ORDER_CANCELED}" class="text-red-600">주문취소</p>
+                        <p th:case="${T(com.somoa.shoppingmall.order.entity.DeliveryStatus).ORDER_COMPLETED}" class="text-green-600">주문완료</p>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center"
+         th:object="${orders.pageable}"
+         th:if="${orders.totalPages > orders.pageable.pageNumber}"
+         th:with="pageLine = 5,
+                  pageNumber = *{pageNumber},
+                  pageSize = *{pageSize},
+                  totalPages = ${orders.totalPages},
+                  startPage = ${(pageNumber / pageLine) * pageLine + 1},
+                  endPage = (${(totalPages == 0) ? 1 : (startPage + (pageLine - 1) < totalPages ? startPage + (pageLine - 1) : totalPages)})">
+        <ul class="pagination">
+
+            <li th:classappend="${startPage <= 1} ? 'disabled'" class="page-item">
+                <button class="page-link" aria-label="Previous"
+                        th:onclick="'paging(' + ${pageNumber - pageLine} + ')'">
+                    <span>&laquo;</span>
+                    <span class="sr-only">10 Previous</span>
+                </button>
+            </li>
+
+            <li th:classappend="${!orders.hasPrevious()} ? 'disabled'" class="page-item">
+                <button class="page-link" aria-label="Previous"
+                        th:onclick="'paging(' + ${pageNumber - 1} + ')'">
+                    <span aria-hidden="true">&lt;</span>
+                    <span class="sr-only">Previous</span>
+                </button>
+            </li>
+
+            <li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page - 1 == pageNumber} ? 'active'" class="page-item">
+                <button th:text="${page}" class="page-link"
+                        th:onclick="'paging(' + ${page - 1} + ')'"></button>
+            </li>
+
+            <li th:classappend="${!orders.hasNext()} ? 'disabled'" class="page-item">
+                <button class="page-link" aria-label="Next"
+                        th:onclick="'paging(' + ${pageNumber + 1} + ')'">
+                    <span aria-hidden="true">&gt;</span>
+                    <span class="sr-only">Next</span>
+                </button>
+            </li>
+
+            <li th:classappend="${endPage >= totalPages} ? 'disabled'" class="page-item">
+                <button class="page-link" aria-label="Next"
+                        th:onclick="'paging(' + ${pageNumber + pageLine >= totalPages ? totalPages - 1 : pageNumber + pageLine} + ')'">
+                    <span>&raquo;</span>
+                    <span class="sr-only">10 Next</span>
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const baseUrl = '/orders?';
+
+        const paging = (pageNumber) => {
+            const urlParams = getUrlParams();
+            if (pageNumber === undefined || pageNumber === null) {
+                pageNumber = 0;
+            }
+            urlParams.set("page", pageNumber);
+            refreshUrl(urlParams);
+        }
+
+        const search = () => {
+            const keyword = document.querySelector('#keyword').value;
+            const urlParams = getUrlParams();
+            setSearchParam(urlParams, 'keyword', keyword);
+            setSearchParam(urlParams, 'page', 0);
+            refreshUrl(urlParams);
+        }
+
+        function setSearchParam(urlParams, param, value) {
+            if (param !== undefined) {
+                urlParams.set(param, value);
+            }
+        }
+
+        const getUrlParams = () => {
+            const url = new URL(window.location.href);
+            return url.searchParams;
+        }
+
+        const refreshUrl = (urlParams) => {
+            location.href = baseUrl + urlParams.toString();
+        }
+
+        const urlParams = getUrlParams();
+        document.querySelector('#keyword').value = urlParams.get('keyword');
+    </script>
+</body>
+</html>
